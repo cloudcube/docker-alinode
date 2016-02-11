@@ -1,19 +1,21 @@
-FROM centos:7
+FROM cloudcube/nodejs
 
 USER root
 
 # Change mirrors
-RUN yum install wget -y
-# RUN mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
-# RUN wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
 
 # Install required software
-RUN yum install curl git python tree gcc gcc-c++ make openssl-devel -y
+RUN \
+    apt-get update && \
+    apt-get install wget curl git python tree gcc g++ make openssl libssl-dev -y && \
+    rm -rf /var/lib/apt/lits/*
 
 ENV HOME /root
 ENV ALINODE_VERSION 1.3.0
 ENV TNVM_DIR /root/.tnvm
 RUN mkdir /tmp/node_log
+
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
 # Install alinode v1.3.0 (node 4.2.6)
 RUN wget -qO- https://raw.githubusercontent.com/aliyun-node/tnvm/master/install.sh | bash 
