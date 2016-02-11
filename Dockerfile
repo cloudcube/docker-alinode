@@ -6,7 +6,7 @@ USER root
 # Install required software
 RUN \
     apt-get update && \
-    apt-get install curl git python tree gcc gcc-c++ make openssl-devel -y && \
+    apt-get install curl git python tree gcc g++ make openssl-devel -y && \
     rm -rf /var/lib/apt/lists/*
 
 ENV HOME /root
