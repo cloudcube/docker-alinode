@@ -14,12 +14,14 @@ ENV ALINODE_VERSION 1.3.0
 ENV TNVM_DIR /root/.tnvm
 RUN mkdir /tmp/node_log
 
+RUN ln -snf /bin/bash /bin/sh
+
 # Install alinode v1.3.0 (node 4.2.6)
 RUN wget -qO- https://raw.githubusercontent.com/aliyun-node/tnvm/master/install.sh | bash 
-RUN /bin/bash -c 'source $HOME/.bashrc && \
+RUN source $HOME/.bashrc && \
         tnvm install "alinode-v$ALINODE_VERSION" && \
-        tnvm use "alinode-v$ALINODE_VERSION"' 
-RUN /bin/bash -c 'source $HOME/.bashrc && npm install -g agentx'
+        tnvm use "alinode-v$ALINODE_VERSION" 
+RUN source $HOME/.bashrc && npm install -g agentx
 RUN git clone https://github.com/aliyun-node/commands.git /usr/local/src/alinode_commands
 
 RUN npm install -g pm2
