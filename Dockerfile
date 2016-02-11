@@ -1,36 +1,27 @@
-FROM ubuntu 
+FROM centos:7
 
 USER root
 
+# Change mirrors
+RUN yum install wget -y
+# RUN mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
+# RUN wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
 
 # Install required software
-RUN \
-    apt-get update && \
-    apt-get install wget curl git python tree gcc g++ make openssl libssl-dev -y && \
-    rm -rf /var/lib/apt/lists/*
+RUN yum install curl git python tree gcc gcc-c++ make openssl-devel -y
 
 ENV HOME /root
 ENV ALINODE_VERSION 1.3.0
 ENV TNVM_DIR /root/.tnvm
 RUN mkdir /tmp/node_log
 
-RUN ln -snf /bin/bash /bin/sh
-
-WORKDIR /root
-
 # Install alinode v1.3.0 (node 4.2.6)
 RUN wget -qO- https://raw.githubusercontent.com/aliyun-node/tnvm/master/install.sh | bash 
-RUN echo $HOME
-RUN source $HOME/.bashrc 
-RUN \
+RUN source $HOME/.bashrc && \
         tnvm install "alinode-v$ALINODE_VERSION" && \
         tnvm use "alinode-v$ALINODE_VERSION" 
-RUN source $HOME/.bashrc 
-RUN \
-     npm install -g agentx
+RUN source $HOME/.bashrc && npm install -g agentx
 RUN git clone https://github.com/aliyun-node/commands.git /usr/local/src/alinode_commands
-
-RUN npm install -g pm2
 
 COPY docker-entrypoint.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
