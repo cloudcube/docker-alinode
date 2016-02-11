@@ -21,10 +21,13 @@ WORKDIR /root
 # Install alinode v1.3.0 (node 4.2.6)
 RUN wget -qO- https://raw.githubusercontent.com/aliyun-node/tnvm/master/install.sh | bash 
 RUN echo $HOME
-RUN source $HOME/.bashrc && \
+RUN source $HOME/.bashrc 
+RUN \
         tnvm install "alinode-v$ALINODE_VERSION" && \
         tnvm use "alinode-v$ALINODE_VERSION" 
-RUN source $HOME/.bashrc && npm install -g agentx
+RUN source $HOME/.bashrc 
+RUN \
+     npm install -g agentx
 RUN git clone https://github.com/aliyun-node/commands.git /usr/local/src/alinode_commands
 
 RUN npm install -g pm2
