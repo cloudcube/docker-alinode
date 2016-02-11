@@ -16,8 +16,11 @@ RUN mkdir /tmp/node_log
 
 RUN ln -snf /bin/bash /bin/sh
 
+WORKDIR /root
+
 # Install alinode v1.3.0 (node 4.2.6)
 RUN wget -qO- https://raw.githubusercontent.com/aliyun-node/tnvm/master/install.sh | bash 
+RUN echo $HOME
 RUN source $HOME/.bashrc && \
         tnvm install "alinode-v$ALINODE_VERSION" && \
         tnvm use "alinode-v$ALINODE_VERSION" 
