@@ -1,4 +1,4 @@
-FROM cloudcube/nodejs
+FROM cloudcube/nodejs:4.x
 
 USER root
 
